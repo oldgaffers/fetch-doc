@@ -63,48 +63,11 @@ base64 -i service-account-key.json | tr -d '\n' > encoded-credentials.txt
 
 ## AWS Lambda Deployment
 
-### 1. Create Lambda Layer for Dependencies
+### 1. Create Lambda Function
 
-Create a deployment package with required libraries:
+Deploy the provided Cloudformation template using the console or cli
 
-```bash
-# Create directory structure
-mkdir -p lambda-layer/python
-cd lambda-layer
-
-# Install dependencies
-pip install google-auth google-auth-httplib2 google-api-python-client -t python/
-
-# Create ZIP file
-zip -r google-api-layer.zip python/
-```
-
-Upload the layer:
-1. Go to AWS Lambda Console → **Layers** → **Create Layer**
-2. Upload `google-api-layer.zip`
-3. Compatible runtimes: Python 3.9, 3.10, 3.11, 3.12
-
-### 2. Create Lambda Function
-
-1. Go to AWS Lambda Console → **Create Function**
-2. Choose **Author from scratch**
-3. Function name: `google-docs-to-html`
-4. Runtime: **Python 3.9** (or higher)
-5. Click **Create Function**
-
-### 3. Add the Code
-
-Copy the Lambda function code into the inline editor or upload as a ZIP file.
-
-### 4. Attach the Layer
-
-1. In your function, scroll to **Layers** section
-2. Click **Add a layer**
-3. Choose **Custom layers**
-4. Select your `google-api-layer`
-5. Click **Add**
-
-### 5. Configure Environment Variables
+### 2. Configure Environment Variables
 
 Add the following environment variables:
 
@@ -113,23 +76,9 @@ Add the following environment variables:
 | `GOOGLE_CREDENTIALS_JSON` | Base64-encoded JSON | Contents of `encoded-credentials.txt` |
 | `GOOGLE_DRIVE_FOLDER_ID` | Folder ID string | The shared folder ID from Google Drive |
 
-### 6. Adjust Function Settings
+### 3. Deploy Function
 
-- **Memory**: 256 MB (recommended)
-- **Timeout**: 30 seconds
-- **Execution role**: Use default or create a role with basic Lambda execution permissions
-
-### 7. Test the Function
-
-Create a test event:
-
-```json
-{
-  "doc_name": "Your Document Name"
-}
-```
-
-Click **Test** and verify the response contains HTML content.
+Modify the provided Github action or follow it to create the zipfile manually and upload.
 
 ## Usage
 

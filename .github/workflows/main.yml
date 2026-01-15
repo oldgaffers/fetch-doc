@@ -1,0 +1,39 @@
+name: deploy to lambda
+permissions:
+  id-token: write
+  contents: read
+on:
+  # Trigger the workflow on push or pull request,
+  # but only for the main branch
+  push:
+    branches:
+      - main
+jobs:
+  deploy_source:
+    name: deploy lambda from source
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - name: checkout source code
+        uses: actions/checkout@v1
+      - name: install python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.13' 
+      - name: install poetry
+        uses: abatilo/actions-poetry@v2
+        with:
+          poetry-version: '1.2.2'
+      - name: package
+        run: |
+          poetry run pip install -t dist .
+          cd dist
+          mv fetch_doc/lambda_function.py .
+          zip -x 'fetch_doc*' '*.pyc' -r ../lambda.zip . 
+      - name: cred
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: eu-west-1
+          role-to-assume: arn:aws:iam::651845762820:role/github-OIDC-Role-JdfwPtWdASUt
+      - name: deploy
+        run: |
+          aws lambda update-function-code --function-name fetch-doc --zip-file fileb://lambda.zip

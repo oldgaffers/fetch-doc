@@ -1,0 +1,22 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: Respond to a web hook and fetch a private google doc as html.
+Resources:
+  lambda:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Description: Respond to a web hook and fetch a private google doc as html.
+      FunctionName: fetch-doc
+      Handler: lambda_function.lambda_handler
+      Runtime: python3.13
+      InlineCode: >-
+        import json
+        def lambda_handler(event, context):
+          print(json.dumps(event))
+      MemorySize: 256
+      Timeout: 30
+      Architectures:
+        - arm64
+      RuntimeManagementConfig:
+        UpdateRuntimeOn: Auto
+

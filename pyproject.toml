@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "boat-edit-to-github"
+version = "0.1.0"
+description = ""
+authors = ["jcable <julian.cable@yahoo.com>"]
+readme = "README.md"
+packages = [{include = "fetch_doc"}]
+
+[tool.poetry.dependencies]
+python = "^3.13"
+google-auth = "^2.47.0"
+google-auth-httplib2 = "^0.3.0"
+google-api-python-client = "^2.188.0"
+
+[tool.poetry.group.dev.dependencies]
+boto3 = "^1.26.118"
+pytest = "^8.4.2"
+coverage = "^7.10.7"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
