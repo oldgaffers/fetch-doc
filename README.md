@@ -219,3 +219,20 @@ The function returns appropriate HTTP status codes:
 - Returns first match if multiple documents have the same name
 - Basic HTML conversion (advanced formatting may not be fully preserved)
 - Document name must be an exact match (case-sensitive)
+
+## Attribution
+
+This Lambda function was created with assistance from Claude (Anthropic AI assistant) in January 2026.
+
+### Dependencies
+
+This project relies on the following open-source libraries:
+
+- **google-auth** - Apache License 2.0
+- **google-auth-httplib2** - Apache License 2.0  
+- **google-api-python-client** - Apache License 2.0
+
+### Google APIs
+
+- [Google Docs API v1](https://developers.google.com/docs/api)
+- [Google Drive API v3](https://developers.google.com/drive/api)
