@@ -26,8 +26,7 @@ import os
 import base64
 from typing import Dict, Any, Optional
 
-# These will need to be installed as a Lambda layer
-from google.oauth2 import service_account
+import google.auth
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
@@ -75,19 +74,7 @@ def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                 })
             }
         
-        # Get credentials from environment variable
-        credentials_json = os.environ.get('GOOGLE_CREDENTIALS_JSON')
-        if not credentials_json:
-            return {
-                'statusCode': 500,
-                'headers': {
-                    'Content-Type': 'application/json'
-                },
-                'body': json.dumps({
-                    'error': 'GOOGLE_CREDENTIALS_JSON environment variable not set'
-                })
-            }
-        
+
         # Get folder ID from environment variable
         folder_id = os.environ.get('GOOGLE_DRIVE_FOLDER_ID')
         if not folder_id:
@@ -101,29 +88,14 @@ def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                 })
             }
         
-        # Decode base64 credentials
-        try:
-            credentials_data = json.loads(base64.b64decode(credentials_json))
-        except Exception as e:
-            return {
-                'statusCode': 500,
-                'headers': {
-                    'Content-Type': 'application/json'
-                },
-                'body': json.dumps({
-                    'error': f'Failed to decode credentials: {str(e)}'
-                })
-            }
-        
-        # Create credentials object with both Drive and Docs scopes
-        SCOPES = [
+        credentials, project = google.auth.default(
+            scopes=[
             'https://www.googleapis.com/auth/documents.readonly',
             'https://www.googleapis.com/auth/drive.readonly'
-        ]
-        credentials = service_account.Credentials.from_service_account_info(
-            credentials_data, 
-            scopes=SCOPES
-        )
+        ])
+
+        print("Google Auth default credentials obtained.")
+        print(f"Project: {project}")
         
         # Build the Google Drive API service
         drive_service = build('drive', 'v3', credentials=credentials)
