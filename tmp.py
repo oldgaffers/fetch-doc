@@ -1,3 +1,26 @@
+"""
+Google Docs to HTML AWS Lambda Function
+
+Created with assistance from Claude (Anthropic)
+Date: January 2026
+
+This function uses the following Google APIs and libraries:
+- Google Docs API v1 (https://developers.google.com/docs/api)
+- Google Drive API v3 (https://developers.google.com/drive/api)
+- google-auth library (https://github.com/googleapis/google-auth-library-python)
+- google-api-python-client (https://github.com/googleapis/google-api-python-client)
+
+Dependencies:
+- google-auth: Apache License 2.0
+- google-auth-httplib2: Apache License 2.0
+- google-api-python-client: Apache License 2.0
+
+References:
+- Google Docs API Documentation: https://developers.google.com/docs/api/reference/rest
+- Google Drive API Documentation: https://developers.google.com/drive/api/reference/rest/v3
+- Service Account Authentication: https://cloud.google.com/iam/docs/service-accounts
+"""
+
 import json
 import os
 import base64
