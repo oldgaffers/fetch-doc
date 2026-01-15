@@ -27,7 +27,8 @@ jobs:
         run: |
           poetry run pip install -t dist .
           cd dist
-          mv fetch_doc/lambda_function.py .
+          mv fetch_doc/*.py .
+          mv fetch_doc/*.json .
           zip -x 'fetch_doc*' '*.pyc' -r ../lambda.zip . 
       - name: cred
         uses: aws-actions/configure-aws-credentials@v4
